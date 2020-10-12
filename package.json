@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/SadMap/KelimeBot/issues"
   },
-  "homepage": "https://github.com/SadMap/KelimeBot#readme"
+  "homepage": "https://github.com/SadMap/KelimeBot#readme",
+  "dependencies": {
+    "eslint": "^7.11.0",
+    "node-fetch": "^2.6.1"
+  }
 }
