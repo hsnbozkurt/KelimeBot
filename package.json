@@ -1,0 +1,19 @@
+{
+  "name": "kelimebot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SadMap/KelimeBot.git"
+  },
+  "author": "SadMap",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SadMap/KelimeBot/issues"
+  },
+  "homepage": "https://github.com/SadMap/KelimeBot#readme"
+}
