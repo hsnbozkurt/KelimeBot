@@ -18,6 +18,7 @@
   "homepage": "https://github.com/SadMap/KelimeBot#readme",
   "dependencies": {
     "eslint": "^7.11.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "sozlukjs": "^1.1.0"
   }
 }
