@@ -2,3 +2,4 @@
 node_modules/
 # GitHub'da Olmayacak Dosyalar
 config.json
+kelime.sqlite
