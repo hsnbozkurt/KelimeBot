@@ -50,11 +50,17 @@ client.on('message', async message => {
 												db.set(`Sonkisi.${message.guild.id}`, message.author.id);
 											}
 											else if (rrr !== message.author.id) {
-												message.react('✅');
-												Array.prototype.push.apply(rr, [mesaj]);
-												db.set(`Oilkharf.${message.guild.id}`, mesaj.slice(-1));
-												db.set(`Kelimeler.${message.guild.id}`, rr);
-												db.set(`Sonkisi.${message.guild.id}`, message.author.id);
+												if (mesaj.endsWith('ğ')) {
+													const yeniharf = randomstring;
+													message.channel.send(`Eveet Oyun Bitti Çünkü Birisi ğ ile Biten Kelime Yazdı ${yeniharf} Sonraki Harfimiz **İyi Oyunlar**`);
+												}
+												else if (!mesaj.endsWith('ğ')) {
+													message.react('✅');
+													Array.prototype.push.apply(rr, [mesaj]);
+													db.set(`Oilkharf.${message.guild.id}`, mesaj.slice(-1));
+													db.set(`Kelimeler.${message.guild.id}`, rr);
+													db.set(`Sonkisi.${message.guild.id}`, message.author.id);
+												}
 											}
 											else if (rrr == message.author.id) {
 												message.channel.send('Aynı Kişi Arka Arkaya Kelime Söyleyemez');
@@ -66,7 +72,10 @@ client.on('message', async message => {
 						});
 				}
 				else if (!message.content.toLocaleLowerCase().startsWith(r2)) {
-					message.channel.send(`Yanlış Harfle Başlayan Mesaj  Attın Şu Andaki Harf ${r2}`)
+					message.delete();
+					message.channel.send(`Yanlış Harfle Başlayan Mesaj  Attın Şu Andaki Harf ${r2}`).then(m3 => {
+						m3.delete({ timeout: 20000 });
+					});
 				}
 			});
 		}
