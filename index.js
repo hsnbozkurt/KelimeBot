@@ -44,6 +44,21 @@ client.on('message', async message => {
 										});
 									}
 									else {
+										db.get(`Sonkisi.${message.guild.id}`).then(rrr => {
+											if (rrr == 'undefined') {
+												db.set(`Sonkisi.${message.guild.id}`, message.author.id);
+											}
+											else if (rrr !== message.author.id) {
+												message.react('✅');
+												Array.prototype.push.apply(rr, message.content);
+												db.set(`Oilkharf.${message.guild.id}`, message.content.slice(-1));
+												db.set(`Kelimeler.${message.guild.id}`, rr);
+												db.set(`Sonkisi.${message.guild.id}`, message.author.id);
+											}
+											else if (rrr == message.author.id) {
+												message.channel.send('Aynı Kişi Arka Arkaya Kelime Söyleyemez');
+											}
+										});
 										message.react('✅');
 										Array.prototype.push.apply(rr, message.content);
 										db.set(`Oilkharf.${message.guild.id}`, message.content.slice(-1));
