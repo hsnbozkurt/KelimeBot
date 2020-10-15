@@ -4,7 +4,6 @@ const client = new dc.Client();
 const sozluk = require('sozlukjs');
 const Keyv = require('keyv');
 const db = new Keyv(`sqlite://./${dbname}.sqlite`);
-const globalPrefix = '-';
 db.on('error', err => console.error('Keyv connection error:', err));
 const chars = 'abcçdefghıijklmnoöprsştuüvyz';
 const string_length = 1;
@@ -12,9 +11,10 @@ let randomstring = '';
 for (let i = 0; i < string_length; i++) {
 	const rnum = Math.floor(Math.random() * chars.length);
 	randomstring += chars.substring(rnum, rnum + 1);
-
 }
-
+client.on('guildCreate', async guildo => {
+	db.set(`prefix.${guildo.id}`, '-');
+});
 client.on('message', async message => {
 	if (message.author.bot) return;
 	db.get(`Okanal.${message.guild.id}`).then(r => {
@@ -33,6 +33,19 @@ client.on('message', async message => {
 							else if (data[0].madde_id) {
 								db.set(`Oilkharf.${message.guild.id}`, message.content.slice(-1));
 								message.react('✅');
+								db.get(`Kelimeler.${message.guild.id}`).then(rr => {
+									if (rr == 'undefined') {
+										const ar = new Array(message.content);
+										db.set(`Kelimeler.${message.guild.id}`, ar);
+									}
+									else if (rr.includes(message.content)) {
+										message.delete();
+										message.channel.send(`${message.content} daha önce kullanılmış`).then(m2 => {
+											const ms = '20000';
+											m2.delete({ timeout: ms });
+										});
+									}
+								});
 							}
 						});
 				}
@@ -44,8 +57,8 @@ client.on('message', async message => {
 	if (message.guild) {
 		let prefix;
 
-		if (message.content.startsWith(globalPrefix)) {
-			prefix = globalPrefix;
+		if (message.content.startsWith('eqwwwqew')) {
+			prefix = 'eqwwwqew';
 		}
 		else {
 			const guildPrefix = await db.get(`prefix.${message.guild.id}`);
@@ -86,7 +99,7 @@ client.on('message', async message => {
 			}
 		}
 
-		return message.channel.send(`Prefix is \`${await db.get('prefix.' + message.guild.id) || globalPrefix}\``);
+		return message.channel.send(`Prefix is \`${await db.get('prefix.' + message.guild.id)}\``);
 	}
 	if (command == 'oyna') {
 		if (args.length) {
