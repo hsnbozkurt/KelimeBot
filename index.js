@@ -20,8 +20,9 @@ client.on('message', async message => {
 	db.get(`Okanal.${message.guild.id}`).then(r => {
 		if (message.channel.id == r) {
 			db.get(`Oilkharf.${message.guild.id}`).then(r2 => {
-				if (message.content.startsWith(r2)) {
-					sozluk.TDKDictionary.getMeaningData(message.content)
+				if (message.content.toLocaleLowerCase().startsWith(r2)) {
+					const mesaj = message.content.toLocaleLowerCase();
+					sozluk.TDKDictionary.getMeaningData(mesaj)
 						.then(data => {
 							if (data.error == 'Sonuç bulunamadı') {
 								message.delete();
@@ -32,11 +33,11 @@ client.on('message', async message => {
 							}
 							else if (data[0].madde_id) {
 								db.get(`Kelimeler.${message.guild.id}`).then(rr => {
-									if (rr == 'undefined') {
-										const ar = new Array(message.content);
+									if (!rr) {
+										const ar = new Array(mesaj);
 										db.set(`Kelimeler.${message.guild.id}`, ar);
 									}
-									else if (rr.includes(message.content)) {
+									else if (rr.includes(mesaj)) {
 										message.delete();
 										message.channel.send(`${message.content} daha önce kullanılmış`).then(m2 => {
 											const ms = '20000';
@@ -50,8 +51,8 @@ client.on('message', async message => {
 											}
 											else if (rrr !== message.author.id) {
 												message.react('✅');
-												Array.prototype.push.apply(rr, message.content);
-												db.set(`Oilkharf.${message.guild.id}`, message.content.slice(-1));
+												Array.prototype.push.apply(rr, [mesaj]);
+												db.set(`Oilkharf.${message.guild.id}`, mesaj.slice(-1));
 												db.set(`Kelimeler.${message.guild.id}`, rr);
 												db.set(`Sonkisi.${message.guild.id}`, message.author.id);
 											}
@@ -59,14 +60,13 @@ client.on('message', async message => {
 												message.channel.send('Aynı Kişi Arka Arkaya Kelime Söyleyemez');
 											}
 										});
-										message.react('✅');
-										Array.prototype.push.apply(rr, message.content);
-										db.set(`Oilkharf.${message.guild.id}`, message.content.slice(-1));
-										db.set(`Kelimeler.${message.guild.id}`, rr);
 									}
 								});
 							}
 						});
+				}
+				else if (!message.content.toLocaleLowerCase().startsWith(r2)) {
+					message.channel.send(`Yanlış Harfle Başlayan Mesaj  Attın Şu Andaki Harf ${r2}`)
 				}
 			});
 		}
