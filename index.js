@@ -31,8 +31,6 @@ client.on('message', async message => {
 								});
 							}
 							else if (data[0].madde_id) {
-								db.set(`Oilkharf.${message.guild.id}`, message.content.slice(-1));
-								message.react('✅');
 								db.get(`Kelimeler.${message.guild.id}`).then(rr => {
 									if (rr == 'undefined') {
 										const ar = new Array(message.content);
@@ -44,6 +42,12 @@ client.on('message', async message => {
 											const ms = '20000';
 											m2.delete({ timeout: ms });
 										});
+									}
+									else {
+										message.react('✅');
+										Array.prototype.push.apply(rr, message.content);
+										db.set(`Oilkharf.${message.guild.id}`, message.content.slice(-1));
+										db.set(`Kelimeler.${message.guild.id}`, rr);
 									}
 								});
 							}
