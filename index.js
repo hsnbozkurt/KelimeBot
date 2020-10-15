@@ -50,7 +50,7 @@ client.on('message', async message => {
 									}
 									else {
 										db.get(`Sonkisi.${message.guild.id}`).then(rrr => {
-											if (rrr == 'undefined') {
+											if (!rrr) {
 												db.set(`Sonkisi.${message.guild.id}`, message.author.id);
 											}
 											else if (rrr !== message.author.id) {
