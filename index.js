@@ -18,6 +18,7 @@ client.on('guildCreate', async guildo => {
 });
 client.on('message', async message => {
 	if (message.author.bot) return;
+	if (!message.guild) return message.channel.send('https://discord.com/oauth2/authorize?client_id=765519752947826708&permissions=0&scope=bot');
 	db.get(`Okanal.${message.guild.id}`).then(r => {
 		if (message.channel.id == r) {
 			db.get(`Oilkharf.${message.guild.id}`).then(r2 => {
