@@ -6,7 +6,6 @@ const Keyv = require('keyv');
 const db = new Keyv(`sqlite://./${dbname}.sqlite`);
 const globalPrefix = '-';
 db.on('error', err => console.error('Keyv connection error:', err));
-
 const chars = 'abcçdefghıijklmnoöprsştuüvyz';
 const string_length = 1;
 let randomstring = '';
@@ -49,7 +48,7 @@ client.on('message', async message => {
 			prefix = globalPrefix;
 		}
 		else {
-			const guildPrefix = await db.get(message.guild.id);
+			const guildPrefix = await db.get(`prefix.${message.guild.id}`);
 			if (message.content.startsWith(guildPrefix)) prefix = guildPrefix;
 		}
 
@@ -79,7 +78,7 @@ client.on('message', async message => {
 	if (command === 'prefix') {
 		if (args.length) {
 			if (message.member.hasPermission('MANAGE_GUILD')) {
-				await db.set(message.guild.id, args[0]);
+				await db.set('prefix.' + message.guild.id, args[0]);
 				return message.channel.send(`Başarıyla prefixi \`${args[0]}\` olarak değiştirdin`);
 			}
 			else {
@@ -87,7 +86,7 @@ client.on('message', async message => {
 			}
 		}
 
-		return message.channel.send(`Prefix is \`${await db.get(message.guild.id) || globalPrefix}\``);
+		return message.channel.send(`Prefix is \`${await db.get('prefix.' + message.guild.id) || globalPrefix}\``);
 	}
 	if (command == 'oyna') {
 		if (args.length) {
