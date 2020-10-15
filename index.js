@@ -15,6 +15,8 @@ for (let i = 0; i < string_length; i++) {
 client.on('guildCreate', async guildo => {
 	db.set(`prefix.${guildo.id}`, '-');
 	db.set(`Klimit.${guildo.id}`, '16');
+	client.user.setActivity(`${client.guilds.cache.size} Sunucudaki Oyuncuları`, { type: 'WATCHING' });
+
 });
 client.on('message', async message => {
 	if (message.author.bot) return;
