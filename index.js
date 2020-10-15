@@ -52,18 +52,46 @@ client.on('message', async message => {
 											}
 											else if (rrr !== message.author.id) {
 												if (mesaj.endsWith('ğ')) {
-													const yeniharf = randomstring;
-													message.channel.send(`Eveet Oyun Bitti Çünkü Birisi ğ ile Biten Kelime Yazdı ${yeniharf} Sonraki Harfimiz **İyi Oyunlar**`);
-													db.delete(`Oilkgarf.${message.guild.id}`);
-													db.delete(`Kelimeler.${message.guild.id}`);
-													db.delete(`Sonkisi.${message.guild.id}`);
+													db.get(`Klimit.${message.guild.id}`).then(ee => {
+														db.get(`KelimeSayı.${message.guild.id}`).then(rrrr => {
+															if (ee == 'Yasak') {
+																message.channel.send('Sunucu Sahibi ğ ile biten kelimeleri kapattı');
+															}
+															if (ee >= rrrr) {
+																const ee3 = randomstring;
+																db.set(`Oilkharf.${message.guild.id}`, ee3);
+																db.delete(`KelimeSayı.${message.guild.id}`);
+																db.delete(`Sonkisi.${message.guild.id}`);
+																db.delete(`Kelimeler.${message.guild.id}`);
+																message.channel.send(`${message.author.tag} Oyunu Bitiren Kelime Yazdı , Yazdığı Kelime ${mesaj} dı, Ve Bu Yüzden Oyun Sıfırlandı , Yeni Harfimiz ${ee3}`);
+															}
+															if (ee != rrrr) {
+																let sayı = Number(ee);
+																sayı = sayı - rrrr;
+																message.channel.send(`Bu Kelime ${sayı} Kelime Sonra Kullanılabilir`);
+															}
+														});
+													});
 												}
 												else if (!mesaj.endsWith('ğ')) {
-													message.react('✅');
-													Array.prototype.push.apply(rr, [mesaj]);
-													db.set(`Oilkharf.${message.guild.id}`, mesaj.slice(-1));
-													db.set(`Kelimeler.${message.guild.id}`, rr);
-													db.set(`Sonkisi.${message.guild.id}`, message.author.id);
+													db.get(`KelimeSayı.${message.guild.id}`).then(rrrr => {
+														if (!rrrr) {
+															db.set(`KelimeSayı.${message.guild.id}`, 1);
+															message.react('✅');
+															Array.prototype.push.apply(rr, [mesaj]);
+															db.set(`Oilkharf.${message.guild.id}`, mesaj.slice(-1));
+															db.set(`Kelimeler.${message.guild.id}`, rr);
+															db.set(`Sonkisi.${message.guild.id}`, message.author.id);
+														}
+														else if (rrrr) {
+															message.react('✅');
+															Array.prototype.push.apply(rr, [mesaj]);
+															db.set(`Oilkharf.${message.guild.id}`, mesaj.slice(-1));
+															db.set(`Kelimeler.${message.guild.id}`, rr);
+															db.set(`Sonkisi.${message.guild.id}`, message.author.id);
+															db.set(`KelimeSayı.${message.guild.id}`, Number(rrrr) + 1);
+														}
+													});
 												}
 											}
 											else if (rrr == message.author.id) {
@@ -156,14 +184,26 @@ Eğer limit 0 olursa limit Olmaz
 Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi Devre Dışı Olacaktır`);
 			}
 			else if (args[1] == '999') {
-				db.set(`Klimit.${message.guild.id}`, 'Kapalı');
+				if (message.member.hasPermission('MANAGE_GUILD')) {
+					db.set(`Klimit.${message.guild.id}`, 'Kapalı');
+					message.react('✅');
+				}
+				else {message.react('✅');}
 			}
 			else if (args[1] == '0') {
-				db.set(`Klimit.${message.guild.id}`, 'Yasak');
+				if (message.member.hasPermission('MANAGE_GUILD')) {
+					db.set(`Klimit.${message.guild.id}`, 'Yasak');
+					message.react('✅');
+				}
+				else {message.react('✅');}
 			}
 			// eslint-disable-next-line no-constant-condition
 			else if (args[1] !== '999', '0') {
-				db.set(`Klimit.${message.guild.id}`, args[1]);
+				if (message.member.hasPermission('MANAGE_GUILD')) {
+					db.set(`Klimit.${message.guild.id}`, args[1]);
+					message.react('✅');
+				}
+				else {message.react('✅');}
 			}
 		}
 	}
