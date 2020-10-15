@@ -53,6 +53,9 @@ client.on('message', async message => {
 												if (mesaj.endsWith('ğ')) {
 													const yeniharf = randomstring;
 													message.channel.send(`Eveet Oyun Bitti Çünkü Birisi ğ ile Biten Kelime Yazdı ${yeniharf} Sonraki Harfimiz **İyi Oyunlar**`);
+													db.delete(`Oilkgarf.${message.guild.id}`);
+													db.delete(`Kelimeler.${message.guild.id}`);
+													db.delete(`Sonkisi.${message.guild.id}`);
 												}
 												else if (!mesaj.endsWith('ğ')) {
 													message.react('✅');
@@ -143,7 +146,26 @@ client.on('message', async message => {
 			}
 		}
 	}
-
+	if (command.toLocaleLowerCase() == 'ayarlar') {
+		if (args[0] == 'minkelime') {
+			if (!args[1]) {
+				await message.channel.send(`**MinKelime Nedir ?**
+MinKelime ğ harfi ile oyunu bitirme limitidir
+Eğer limit 0 olursa limit Olmaz
+Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi Devre Dışı Olacaktır`);
+			}
+			else if (args[1] == '999') {
+				db.set(`Klimit.${message.guild.id}`, 'Kapalı');
+			}
+			else if (args[1] == '0') {
+				db.set(`Klimit.${message.guild.id}`, 'Yasak');
+			}
+			// eslint-disable-next-line no-constant-condition
+			else if (args[1] !== '999', '0') {
+				db.set(`Klimit.${message.guild.id}`, args[1]);
+			}
+		}
+	}
 
 });
 client.login(token);
