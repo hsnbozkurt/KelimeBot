@@ -12,10 +12,13 @@ for (let i = 0; i < string_length; i++) {
 	const rnum = Math.floor(Math.random() * chars.length);
 	randomstring += chars.substring(rnum, rnum + 1);
 }
+client.on('ready', async e => {
+	client.user.setActivity(`${client.guilds.cache.size} Sunucudaki ${client.users.cache.size} Oyuncuyu`, { type : 'WATCHING' });
+});
 client.on('guildCreate', async guildo => {
 	db.set(`prefix.${guildo.id}`, '-');
 	db.set(`Klimit.${guildo.id}`, '16');
-	client.user.setActivity(`${client.guilds.cache.size} Sunucudaki Oyuncuları`, { type: 'WATCHING' });
+	client.user.setActivity(`${client.guilds.cache.size} Sunucudaki ${client.users.cache.size} Oyuncuyu`, { type: 'WATCHING' });
 
 });
 client.on('message', async message => {
