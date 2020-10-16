@@ -60,7 +60,7 @@ client.on('message', async message => {
 															if (ee == 'Yasak') {
 																message.channel.send('Sunucu Sahibi ğ ile biten kelimeleri kapattı');
 															}
-															if (ee >= rrrr) {
+															if (ee == rrrr) {
 																const ee3 = randomstring;
 																db.set(`Oilkharf.${message.guild.id}`, ee3);
 																db.delete(`KelimeSayı.${message.guild.id}`);
@@ -71,7 +71,10 @@ client.on('message', async message => {
 															if (ee != rrrr) {
 																let sayı = Number(ee);
 																sayı = sayı - rrrr;
-																message.channel.send(`Bu Kelime ${sayı} Kelime Sonra Kullanılabilir`);
+																message.delete();
+																message.channel.send(`Bu Kelime ${sayı} Kelime Sonra Kullanılabilir`).then(m => {
+																	m.delete({ timeout : 20000 });
+																});
 															}
 														});
 													});
@@ -98,7 +101,10 @@ client.on('message', async message => {
 												}
 											}
 											else if (rrr == message.author.id) {
-												message.channel.send('Aynı Kişi Arka Arkaya Kelime Söyleyemez');
+												message.delete();
+												message.channel.send('Aynı Kişi Arka Arkaya Kelime Söyleyemez').then(m => {
+													m.delete({ timeout: 20000 });
+												});
 											}
 										});
 									}
