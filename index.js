@@ -143,7 +143,7 @@ client.on('message', async message => {
 	}
 	else {
 		// handle DMs
-		message.channel.send('https://discord.com/oauth2/authorize?client_id=765519752947826708&permissions=0&scope=bot');
+		message.channel.send('https://discord.com/oauth2/authorize?client_id=' + client.user.id + '&permissions=0&scope=bot');
 	}
 
 	const command = args.shift().toLowerCase();
@@ -160,22 +160,17 @@ client.on('message', async message => {
 			return mention;
 		}
 	}
-	if (command === 'prefix') {
-		if (args.length) {
-			if (message.member.hasPermission('MANAGE_GUILD')) {
+	if (message.member.hasPermission('MANAGE_GUILD')) {
+		if (command === 'prefix') {
+			if (args.length) {
 				await db.set('prefix.' + message.guild.id, args[0]);
 				return message.channel.send(`Başarıyla prefixi \`${args[0]}\` olarak değiştirdin`);
 			}
-			else {
-				return message.channel.send('Yetersiz Yetki');
-			}
-		}
 
-		return message.channel.send(`Prefix is \`${await db.get('prefix.' + message.guild.id)}\``);
-	}
-	if (command == 'oyna') {
-		if (args.length) {
-			if (message.member.hasPermission('MANAGE_GUILD')) {
+			return message.channel.send(`Prefix is \`${await db.get('prefix.' + message.guild.id)}\``);
+		}
+		if (command == 'oyna') {
+			if (args.length) {
 				console.log(getUserFromMention(args[0]));
 				const e = randomstring;
 				db.set(`Okanal.${message.guild.id}`, getUserFromMention(args[0]));
@@ -187,6 +182,9 @@ client.on('message', async message => {
 			}
 		}
 	}
+	else {
+		return message.channel.send('Yetersiz Yetki');
+		}
 	if (command.toLocaleLowerCase() == 'ayarlar') {
 		if (args[0] == 'minkelime') {
 			if (!args[1]) {
@@ -219,6 +217,5 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
 			}
 		}
 	}
-
 });
 client.login(token);
