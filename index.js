@@ -178,15 +178,13 @@ client.on('message', async message => {
 					client.channels.cache.get(r).send(`İlk Harfimiz ${e} İyi Oyunlar dilerim`);
 					db.set(`Oilkharf.${message.guild.id}`, e);
 				},
-				);	
+				);
 			}
 		}
 	}
-	
 	else {
 		return message.channel.send('Yetersiz Yetki');
 		}
-	
 	if (command.toLocaleLowerCase() == 'ayarlar') {
 		if (args[0] == 'minkelime') {
 			if (!args[1]) {
