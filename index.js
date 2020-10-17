@@ -207,7 +207,6 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
 				}
 				else {message.react('✅');}
 			}
-			// eslint-disable-next-line no-constant-condition
 			else {
 				if (message.member.hasPermission('MANAGE_GUILD')) {
 					db.set(`Klimit.${message.guild.id}`, args[1]);
