@@ -143,7 +143,7 @@ client.on('message', async message => {
 	}
 	else {
 		// handle DMs
-		message.channel.send('https://discord.com/oauth2/authorize?client_id='+client.user.id+'&permissions=0&scope=bot');
+		message.channel.send('https://discord.com/oauth2/authorize?client_id=' + client.user.id + '&permissions=0&scope=bot');
 	}
 
 	const command = args.shift().toLowerCase();
