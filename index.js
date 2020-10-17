@@ -161,7 +161,7 @@ client.on('message', async message => {
 		}
 	}
 	if (message.member.hasPermission('MANAGE_GUILD')) {
-		if (command === 'prefix') {
+		if (command == 'prefix') {
 			if (args.length) {
 				await db.set('prefix.' + message.guild.id, args[0]);
 				return message.channel.send(`Başarıyla prefixi \`${args[0]}\` olarak değiştirdin`);
@@ -182,9 +182,7 @@ client.on('message', async message => {
 			}
 		}
 	}
-	else {
-		return message.channel.send('Yetersiz Yetki');
-		}
+	else {return message.channel.send('Yetersiz Yetki');}
 	if (command.toLocaleLowerCase() == 'ayarlar') {
 		if (args[0] == 'minkelime') {
 			if (!args[1]) {
@@ -207,14 +205,12 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
 				}
 				else {message.react('✅');}
 			}
-			// eslint-disable-next-line no-constant-condition
-			else if (args[1] !== '999', '0') {
-				if (message.member.hasPermission('MANAGE_GUILD')) {
+
+			else if (message.member.hasPermission('MANAGE_GUILD')) {
 					db.set(`Klimit.${message.guild.id}`, args[1]);
 					message.react('✅');
-				}
-				else {message.react('✅');}
 			}
+			else {message.react('✅');}
 		}
 	}
 });
