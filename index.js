@@ -148,7 +148,6 @@ client.on('message', async message => {
 
 	const command = args.shift().toLowerCase();
 	function getUserFromMention(mention) {
-		if (!mention) return;
 
 		if (mention.startsWith('<#') && mention.endsWith('>')) {
 			mention = mention.slice(2, -1);
