@@ -1,6 +1,6 @@
-const dc = require('discord.js');
+const Discord = require('discord.js');
 const { token, dbname } = require('./config.json');
-const client = new dc.Client();
+const client = new Discord.Client();
 const sozluk = require('sozlukjs');
 const Keyv = require('keyv');
 const db = new Keyv(`sqlite://./${dbname}.sqlite`);
@@ -212,6 +212,32 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
 			}
 			else {message.react('✅');}
 		}
+	}
+	if (command == 'yardım') {
+		message.delete();
+		message.channel.send({ embed :{
+			'title': '**Oyun Nasıl Başlatılır ?**',
+			'description': '**``<prefix>``oyna ``kanal`` Şeklinde oyun başlatılır ve botun o kanalda mesajları yönet,emoji ekle ,mesaj gönder,mesajları oku izni olmalıdır eğer yeterli izinleri varsa o kanala oyun başladı mesajı atar**',
+			'color': 7843580,
+			'fields': [
+				{
+					'name': 'Oyunda ``ğ`` Harfini Nasıl Kapatırım / Yazılması için Gereken Kelime Limitini Nasıl Belirlerim Veya Harfi Nasıl Kapatırım ?',
+					'value': '**``<prefix>``minkelime İle istediğiniz sayıda oyunun bitmesini , ``ğ`` harfini yasaklamayı ayarlayabilirsiniz\n0 /Kapatır (``ğ`` harfi herzaman yazılabilir)\n1-998 / Kelime Limitini Belirler\n999 / ``ğ`` harfini kapatır**',
+				},
+				{
+					'name': '``<prefix>`` Ne Demek ?',
+					'value': '``<prefix>`` **Botun Prefixini Temsil Eder İlk Seferde ``-`` olarak gelir değiştirmek için -prefix ``<yeniprefix>`` Yazılması Yeterlidir**',
+				},
+			],
+			'author': {
+				'name': 'KelimeBot Yardım',
+				'icon_url': client.user.displayAvatarURL(),
+			},
+			'footer': {
+				'text': `${message.author.tag} tarafından istendi`,
+				'icon_url': message.author.displayAvatarURL(),
+			},
+		} });
 	}
 });
 client.login(token);
