@@ -3,6 +3,7 @@ const { token, dbname } = require('./config.json');
 const client = new Discord.Client();
 const sozluk = require('sozlukjs');
 const Keyv = require('keyv');
+const os1 = require('os-utils');
 const db = new Keyv(`sqlite://./${dbname}.sqlite`);
 db.on('error', err => console.error('Keyv connection error:', err));
 const chars = 'abcçdefghıijklmnoöprsştuüvyz';
@@ -170,7 +171,6 @@ client.on('message', async message => {
 		}
 		if (command == 'oyna') {
 			if (args.length) {
-				console.log(getUserFromMention(args[0]));
 				const e = randomstring;
 				db.set(`Okanal.${message.guild.id}`, getUserFromMention(args[0]));
 				db.get(`Okanal.${message.guild.id}`).then(r => {
@@ -181,7 +181,6 @@ client.on('message', async message => {
 			}
 		}
 	}
-	else {return message.channel.send('Yetersiz Yetki');}
 	if (command.toLocaleLowerCase() == 'ayarlar') {
 		if (args[0] == 'minkelime') {
 			if (!args[1]) {
@@ -195,21 +194,21 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
 					db.set(`Klimit.${message.guild.id}`, 'Kapalı');
 					message.react('✅');
 				}
-				else {message.react('✅');}
+				else {message.reply('Yetersiz Yetki Daha Yetkili Birisinden Yardım iste');}
 			}
 			else if (args[1] == '0') {
 				if (message.member.hasPermission('MANAGE_GUILD')) {
 					db.set(`Klimit.${message.guild.id}`, 'Yasak');
 					message.react('✅');
 				}
-				else {message.react('✅');}
+				else {message.reply('Yetersiz Yetki Daha Yetkili Birisinden Yardım iste');}
 			}
 
 			else if (message.member.hasPermission('MANAGE_GUILD')) {
 				db.set(`Klimit.${message.guild.id}`, args[1]);
 				message.react('✅');
 			}
-			else {message.react('✅');}
+			else {message.reply('Yetersiz Yetki Daha Yetkili Birisinden Yardım iste');}
 		}
 	}
 	if (command == 'yardım') {
@@ -237,6 +236,31 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
 				'icon_url': message.author.displayAvatarURL(),
 			},
 		} });
+	}
+	if (command == 'bilgi') {
+		let totalSeconds = (client.uptime / 1000);
+		const days = Math.floor(totalSeconds / 86400);
+		totalSeconds %= 86400;
+		const hours = Math.floor(totalSeconds / 3600);
+		totalSeconds %= 3600;
+		const minutes = Math.floor(totalSeconds / 60);
+		const seconds = Math.floor(totalSeconds % 60);
+		os1.cpuUsage(function(v) {
+			const embed = new Discord.MessageEmbed()
+				.setTitle('Bot Ve Sunucu Bilgileri')
+				.setDescription(`**Bot Açık Kalma Süresi**
+			\`\`\`fix
+${days} Gün, ${hours} Saat, ${minutes} Dakika,  ${seconds} Saniye \`\`\`
+**Ram Kullanımı **
+\`\`\`fix
+${Math.floor(process.memoryUsage().heapUsed / 1048576)} MB / ${Math.floor(process.memoryUsage().heapTotal / 1048576)} MB\`\`\`
+**Cpu Kullanımı **
+\`\`\`fix
+%${Math.ceil(v)}\`\`\`
+`)
+				.setColor('#e0cd29');
+			message.channel.send(embed);
+		});
 	}
 });
 client.login(token);
