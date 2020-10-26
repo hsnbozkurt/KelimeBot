@@ -64,7 +64,7 @@ client.on('message', async message => {
 															if (ee == 'Yasak') {
 																message.channel.send('Sunucu Sahibi ğ ile biten kelimeleri kapattı');
 															}
-															if (ee == rrrr) {
+															if (ee - rrrr < 1) {
 																const ee3 = randomstring;
 																db.set(`Oilkharf.${message.guild.id}`, ee3);
 																db.delete(`KelimeSayı.${message.guild.id}`);
@@ -72,7 +72,7 @@ client.on('message', async message => {
 																db.delete(`Kelimeler.${message.guild.id}`);
 																message.channel.send(`${message.author.tag} Oyunu Bitiren Kelime Yazdı , Yazdığı Kelime ${mesaj} dı, Ve Bu Yüzden Oyun Sıfırlandı , Yeni Harfimiz ${ee3}`);
 															}
-															if (ee != rrrr) {
+															if (ee - rrrr > 1) {
 																let sayı = Number(ee);
 																sayı = sayı - rrrr;
 																message.delete();
