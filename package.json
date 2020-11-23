@@ -19,7 +19,7 @@
   "homepage": "https://github.com/SadMap/KelimeBot#readme",
   "dependencies": {
     "@keyv/sqlite": "^2.0.2",
-    "discord.js": "^12.4.1",
+    "discord.js": "^12.5.0",
     "eslint": "^7.13.0",
     "keyv": "^4.0.3",
     "node-fetch": "^2.6.1",
