@@ -5,5 +5,6 @@
 <a href="https://www.codefactor.io/repository/github/sadmap/kelimebot"><img src="https://www.codefactor.io/repository/github/sadmap/kelimebot/badge" alt="CodeFactor" /></a>
 </a>
 [![Build Status](https://travis-ci.com/SadMap/KelimeBot.svg?branch=main)](https://travis-ci.com/SadMap/KelimeBot)
-[![Build Status](https://dev.azure.com/rerdupufyu/rerdupufyu/_apis/build/status/SadMap.KelimeBot?branchName=main)](https://dev.azure.com/rerdupufyu/rerdupufyu/_build/latest?definitionId=1&branchName=main) <br />
+[![Build Status](https://dev.azure.com/rerdupufyu/rerdupufyu/_apis/build/status/SadMap.KelimeBot?branchName=main)](https://dev.azure.com/rerdupufyu/rerdupufyu/_build/latest?definitionId=1&branchName=main)
+<img src="https://forthebadge.com/images/badges/made-with-javascript.svg" /> <br />
 Basit Bir Kelime Oyunu Botu Çoklu Guild Uyumludur
