@@ -22,7 +22,7 @@
     "discord.js": "^12.5.3",
     "eslint": "^7.26.0",
     "keyv": "^4.0.3",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.2.2",
     "os-utils": "0.0.14",
     "sozlukjs": "^1.1.0"
   }
