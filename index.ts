@@ -112,7 +112,7 @@ client.on('messageCreate', async message => {
 											else if (rrr == message.author.id) {
 												message.delete();
 												message.channel.send('Aynı Kişi Arka Arkaya Kelime Söyleyemez').then(m => {
-													setTimeout(() =>m.delete(),20000)
+													setTimeout(() =>m.delete(),20000);
 												});
 											}
 										});
