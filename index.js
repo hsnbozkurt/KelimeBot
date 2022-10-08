@@ -1,12 +1,38 @@
 "use strict";
-const Discord = require('discord.js');
-const { token, dbname } = require('./config.json');
-const client = new Discord.Client();
-const sozluk = require('sozlukjs');
-const Keyv = require('keyv');
-const os1 = require('os-utils');
-const db = new Keyv(`sqlite://./${dbname}.sqlite`);
-db.on('error', err => console.error('Keyv connection error:', err));
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const config_js_1 = require("./config.js");
+const keyv_1 = __importDefault(require("keyv"));
+const discord_js_1 = require("discord.js");
+const sozluk = __importStar(require("sozlukjs"));
+const os1 = __importStar(require("os-utils"));
+const client = new discord_js_1.Client();
+const db = new keyv_1.default(`sqlite://./${config_js_1.dbname}.sqlite`);
 const chars = 'abcçdefghıijklmnoöprsştuüvyz';
 const string_length = 1;
 let randomstring = '';
@@ -34,10 +60,11 @@ client.on('message', async (message) => {
                     const mesaj = message.content.toLocaleLowerCase();
                     sozluk.TDKDictionary.getMeaningData(mesaj)
                         .then(data => {
+                        //@ts-expect-error
                         if (data.error == 'Sonuç bulunamadı') {
                             message.delete();
                             message.channel.send('Hocam Öyle Kelime yok').then(m => {
-                                const ms = '20000';
+                                const ms = 20000;
                                 m.delete({ timeout: ms });
                             });
                         }
@@ -50,7 +77,7 @@ client.on('message', async (message) => {
                                 else if (rr.includes(mesaj)) {
                                     message.delete();
                                     message.channel.send(`${message.content} daha önce kullanılmış`).then(m2 => {
-                                        const ms = '20000';
+                                        const ms = 20000;
                                         m2.delete({ timeout: ms });
                                     });
                                 }
@@ -147,8 +174,9 @@ client.on('message', async (message) => {
     else {
         // handle DMs
         message.channel.send('https://discord.com/oauth2/authorize?client_id=' + client.user.id + '&permissions=0&scope=bot');
+        return;
     }
-    const command = args.shift().toLowerCase();
+    const command = args?.shift()?.toLowerCase();
     function getUserFromMention(mention) {
         if (mention.startsWith('<#') && mention.endsWith('>')) {
             mention = mention.slice(2, -1);
@@ -177,6 +205,8 @@ client.on('message', async (message) => {
             }
         }
     }
+    if (!command)
+        return;
     if (command.toLocaleLowerCase() == 'ayarlar') {
         if (args[0] == 'minkelime') {
             if (!args[1]) {
@@ -239,7 +269,7 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
             } });
     }
     if (command == 'bilgi') {
-        let totalSeconds = (client.uptime / 1000);
+        let totalSeconds = (client.uptime ?? 0 / 1000);
         const days = Math.floor(totalSeconds / 86400);
         totalSeconds %= 86400;
         const hours = Math.floor(totalSeconds / 3600);
@@ -247,7 +277,7 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = Math.floor(totalSeconds % 60);
         os1.cpuUsage(function (v) {
-            const embed = new Discord.MessageEmbed()
+            const embed = new discord_js_1.MessageEmbed()
                 .setTitle('Bot Ve Sunucu Bilgileri')
                 .setDescription(`**Bot Açık Kalma Süresi**
 			\`\`\`fix
@@ -264,4 +294,4 @@ ${Math.floor(process.memoryUsage().heapUsed / 1048576)} MB / ${Math.floor(proces
         });
     }
 });
-client.login(token);
+client.login(config_js_1.token);
