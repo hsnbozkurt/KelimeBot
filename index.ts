@@ -3,7 +3,9 @@ import Keyv from "keyv";
 import { Client, MessageEmbed, TextChannel } from "discord.js";
 import * as sozluk from "sozlukjs";
 import * as os1 from "os-utils";
-const client = new Client();
+const client = new Client({
+	intents:["GUILDS","GUILD_MESSAGES","MESSAGE_CONTENT"]
+});
 const db = new Keyv(`sqlite://./${dbname}.sqlite`);
 const chars = 'abcçdefghıijklmnoöprsştuüvyz';
 const string_length = 1;
@@ -21,9 +23,12 @@ client.on('guildCreate', async guildo => {
 	client.user!.setActivity(`${client.guilds.cache.size} Sunucudaki ${client.users.cache.size} Oyuncuyu`, { type: 'WATCHING' });
 
 });
-client.on('message', async message => {
+client.on('messageCreate', async message => {
 	if (message.author.bot) return;
-	if (!message.guild) return message.channel.send('https://discord.com/oauth2/authorize?client_id=765519752947826708&permissions=0&scope=bot');
+	if (!message.guild) {
+	message.channel.send('https://discord.com/oauth2/authorize?client_id=765519752947826708&permissions=0&scope=bot')
+	return;
+}
 	db.get(`Okanal.${message.guild.id}`).then(r => {
 		if (message.channel.id == r) {
 			db.get(`Oilkharf.${message.guild!.id}`).then(r2 => {
@@ -36,7 +41,7 @@ client.on('message', async message => {
 								message.delete();
 								message.channel.send('Hocam Öyle Kelime yok').then(m => {
 									const ms = 20000;
-									m.delete({ timeout: ms });
+									setTimeout(() =>m.delete(),ms)
 								});
 							}
 							else if (data[0].madde_id) {
@@ -49,7 +54,7 @@ client.on('message', async message => {
 										message.delete();
 										message.channel.send(`${message.content} daha önce kullanılmış`).then(m2 => {
 											const ms = 20000;
-											m2.delete({ timeout: ms });
+											setTimeout(() =>m2.delete(),ms)
 										});
 									}
 									else {
@@ -77,7 +82,7 @@ client.on('message', async message => {
 																sayı = sayı - rrrr;
 																message.delete();
 																message.channel.send(`Bu Kelime ${sayı} Kelime Sonra Kullanılabilir`).then(m => {
-																	m.delete({ timeout : 20000 });
+																	setTimeout(() =>m.delete(),20000)
 																});
 															}
 														});
@@ -107,7 +112,7 @@ client.on('message', async message => {
 											else if (rrr == message.author.id) {
 												message.delete();
 												message.channel.send('Aynı Kişi Arka Arkaya Kelime Söyleyemez').then(m => {
-													m.delete({ timeout: 20000 });
+													setTimeout(() =>m.delete(),20000);
 												});
 											}
 										});
@@ -119,7 +124,7 @@ client.on('message', async message => {
 				else if (!message.content.toLocaleLowerCase().startsWith(r2)) {
 					message.delete();
 					message.channel.send(`Yanlış Harfle Başlayan Mesaj  Attın Şu Andaki Harf ${r2}`).then(m3 => {
-						m3.delete({ timeout: 20000 });
+						setTimeout(() =>m3.delete(),20000)
 					});
 				}
 			});
@@ -161,14 +166,16 @@ client.on('message', async message => {
 			return mention;
 		}
 	}
-	if (message.member!.hasPermission('MANAGE_GUILD')) {
+	if (message.member!.permissions.has('MANAGE_GUILD',true)) {
 		if (command == 'prefix') {
 			if (args.length) {
 				await db.set('prefix.' + message.guild.id, args[0]);
-				return message.channel.send(`Başarıyla prefixi \`${args[0]}\` olarak değiştirdin`);
+				message.channel.send(`Başarıyla prefixi \`${args[0]}\` olarak değiştirdin`);
+				return;
 			}
 
-			return message.channel.send(`Prefix is \`${await db.get('prefix.' + message.guild.id)}\``);
+			message.channel.send(`Prefix is \`${await db.get('prefix.' + message.guild.id)}\``);
+			return;
 		}
 		if (command == 'oyna') {
 			if (args.length) {
@@ -192,21 +199,21 @@ Eğer limit 0 olursa limit Olmaz
 Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi Devre Dışı Olacaktır`);
 			}
 			else if (args[1] == '999') {
-				if (message.member!.hasPermission('MANAGE_GUILD')) {
+				if (message.member!.permissions.has('MANAGE_GUILD',true)) {
 					db.set(`Klimit.${message.guild.id}`, 'Kapalı');
 					message.react('✅');
 				}
 				else {message.reply('Yetersiz Yetki Daha Yetkili Birisinden Yardım iste');}
 			}
 			else if (args[1] == '0') {
-				if (message.member!.hasPermission('MANAGE_GUILD')) {
+				if (message.member!.permissions.has('MANAGE_GUILD',true)) {
 					db.set(`Klimit.${message.guild.id}`, 'Yasak');
 					message.react('✅');
 				}
 				else {message.reply('Yetersiz Yetki Daha Yetkili Birisinden Yardım iste');}
 			}
 
-			else if (message.member!.hasPermission('MANAGE_GUILD')) {
+			else if (message.member!.permissions.has('MANAGE_GUILD',true)) {
 				db.set(`Klimit.${message.guild.id}`, args[1]);
 				message.react('✅');
 			}
@@ -215,7 +222,7 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
 	}
 	if (command == 'yardım') {
 		message.delete();
-		message.channel.send({ embed :{
+		message.channel.send({ embeds :[{
 			'title': '**Oyun Nasıl Başlatılır ?**',
 			'description': '**``<prefix>``oyna ``kanal`` Şeklinde oyun başlatılır ve botun o kanalda mesajları yönet,emoji ekle ,mesaj gönder,mesajları oku izni olmalıdır eğer yeterli izinleri varsa o kanala oyun başladı mesajı atar**',
 			'color': 7843580,
@@ -237,7 +244,7 @@ Eğer Oyun Bitmesin İstiyorsanız 999 Yazmalısınız Otomatik olarak ğ harfi 
 				'text': `${message.author.tag} tarafından istendi`,
 				'icon_url': message.author.displayAvatarURL(),
 			},
-		} });
+		}]});
 	}
 	if (command == 'bilgi') {
 		let totalSeconds = (client.uptime ?? 0 / 1000);
@@ -261,7 +268,7 @@ ${Math.floor(process.memoryUsage().heapUsed / 1048576)} MB / ${Math.floor(proces
 %${Math.ceil(v)}\`\`\`
 `)
 				.setColor('#e0cd29');
-			message.channel.send(embed);
+			message.channel.send({embeds:[embed]});
 		});
 	}
 });
