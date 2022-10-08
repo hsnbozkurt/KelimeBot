@@ -1,2 +1,2 @@
 export const token = "";
-export const dbname = "kelime"
+export const dbname = "kelime";

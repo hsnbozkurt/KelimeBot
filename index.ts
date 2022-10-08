@@ -31,7 +31,7 @@ client.on('message', async message => {
 					const mesaj = message.content.toLocaleLowerCase();
 					sozluk.TDKDictionary.getMeaningData(mesaj)
 						.then(data => {
-							//@ts-expect-error
+							// @ts-expect-error
 							if (data.error == 'Sonuç bulunamadı') {
 								message.delete();
 								message.channel.send('Hocam Öyle Kelime yok').then(m => {
