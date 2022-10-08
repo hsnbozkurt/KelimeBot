@@ -106,7 +106,7 @@ client.on('message', async message => {
 											}
 											else if (rrr == message.author.id) {
 												message.delete();
-												message.channel.send('Aynı Kişi Arka Arkaya Kelime Söyleyemez').then(m => {
+												message.channel.send('Aynı Kullanıcı Üst Üste Kelime Söyleyemez').then(m => {
 													m.delete({ timeout: 20000 });
 												});
 											}
@@ -118,7 +118,7 @@ client.on('message', async message => {
 				}
 				else if (!message.content.toLocaleLowerCase().startsWith(r2)) {
 					message.delete();
-					message.channel.send(`Yanlış Harfle Başlayan Mesaj  Attın Şu Andaki Harf ${r2}`).then(m3 => {
+					message.channel.send(`Yanlış Harfle Başlayan Kelime Gönderdin! Şu Andaki Harf ${r2}`).then(m3 => {
 						m3.delete({ timeout: 20000 });
 					});
 				}
