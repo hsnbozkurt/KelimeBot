@@ -1,9 +1,9 @@
-import {dbname, token} from "./config.js"
-import Keyv from "keyv"
+import { dbname, token } from "./config.js";
+import Keyv from "keyv";
 import { Client, MessageEmbed, TextChannel } from "discord.js";
-import * as sozluk from "sozlukjs"
-import * as os1 from "os-utils"
-const client = new Client()
+import * as sozluk from "sozlukjs";
+import * as os1 from "os-utils";
+const client = new Client();
 const db = new Keyv(`sqlite://./${dbname}.sqlite`);
 const chars = 'abcçdefghıijklmnoöprsştuüvyz';
 const string_length = 1;

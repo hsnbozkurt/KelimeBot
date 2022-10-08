@@ -60,6 +60,6 @@ declare module 'sozlukjs' {
         ekno:       string;
     }
     export class TDKDictionary  {
-        static async getMeaningData(query:string):Promise<MeaningData[]>
+        static getMeaningData(query:string):Promise<MeaningData[]>
     }
 }
